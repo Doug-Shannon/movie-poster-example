@@ -1,7 +1,7 @@
 import React from "react";
 import "./movie.css";
 
-function Movie(props) {
+function Movie({posterpath, name}) {
   //   return <p>{props.name + " " + props.posterpath}</p>;
   return (
     <div
@@ -9,7 +9,7 @@ function Movie(props) {
         width: "500px",
         height: "750px",
         border: "1px solid black",
-        backgroundImage: `url(${props.posterpath})`,
+        backgroundImage: `url(${posterpath})`,
         backgroundSize: "cover"
       }}
     ></div>

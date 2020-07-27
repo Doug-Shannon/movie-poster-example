@@ -6,28 +6,28 @@ function App() {
   const [movies, setMovies] = useState([]);
   const mdbUrl = "https://api.themoviedb.org/3/";
   const posterUrl = "http://image.tmdb.org/t/p/w500/";
-  const mdbApi = "api_key=";
+  const mdbApi = "api_key=3da7e91a9c2125919c37b777de884c03";
   const mdbSearch = `${mdbUrl}search/movie/`;
 
-  useEffect(() =>
-    // fetch("https://ghibliapi.herokuapp.com/films")
-    //   .then((response) => {
-    //     return response.json();
-    //   })
-    //   .then((data) => setMovies(data)),
-    {
-      searchMovie({ title: "the matrix" }).then((results) => {
-        setMovies(results.results);
-      });
-    }, []);
+  useEffect(() => {
+    searchMovie({ title: "the matrix" }).then((results) => {
+      setMovies(results.results);
+    });
+  }, []);
 
-  const searchMovie = (movie) => {
+  useEffect(() => {
+    if (movies.length > 0) {
+      console.log("2nd use effect: " + movies[0].title);
+    }
+  }, [movies]);
+
+  const searchMovie = ({title}) => {
     // www.themoviedb.org/search/movie?api_key=asdlkjasjdalsjkd&query=the%20matrix
-    return fetch(
-      `${mdbSearch}?${mdbApi}&query=${encodeURIComponent(movie.title)}`
-    )
-      .then((resp) => resp.json())
-      .catch((error) => console.error(error));
+    if (title.length > 0) {
+      return fetch(`${mdbSearch}?${mdbApi}&query=${encodeURIComponent(title)}`)
+        .then((resp) => resp.json())
+        .catch((error) => console.error(error));
+    }
   };
 
   const textChanged = (e) => {
@@ -36,19 +36,21 @@ function App() {
     });
   };
 
-  debugger;
   return (
     <div>
       <input onChange={textChanged} />
       <div style={{ display: "flex", flexFlow: "row wrap" }}>
         {movies.map((movie) => {
-          return (
-            <Movie
-              name={movie.title}
-              posterpath={`${posterUrl}${movie.poster_path}`}
-            ></Movie>
-          );
-        })}{" "}
+          if (movie.poster_path != null) {
+            return (
+              <Movie
+                key={movie.id}
+                name={movie.title}
+                posterpath={`${posterUrl}${movie.poster_path}`}
+              ></Movie>
+            );
+          }
+        })}
       </div>
     </div>
   );
