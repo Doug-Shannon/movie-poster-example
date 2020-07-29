@@ -1,0 +1,6 @@
+.poster {
+  width: 250px;
+  height: 375px;
+  border: 1px solid black;
+  overflow: scroll;
+}
